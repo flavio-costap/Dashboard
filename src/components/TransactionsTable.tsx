@@ -36,7 +36,7 @@ const StyledTableContainer = styled(TableContainer)`
 
 export default function TransactionsTable({ data }: TransactionsTableProps) {
   const [page, setPage] = useState(0);
-  const rowsPerPage = 8;
+  const rowsPerPage = 5;
 
   const handleChangePage = (_: unknown, newPage: number) => {
     setPage(newPage);

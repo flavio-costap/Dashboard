@@ -11,12 +11,16 @@ import {
   LineChart,
   Line,
   CartesianGrid,
+  ReferenceLine,
 } from "recharts";
 import { Box, Typography, useTheme } from "@mui/material";
 import { styled } from "styled-components";
 import { useTransaction } from "@/hooks/useTransaction";
 import { useEffect } from "react";
 import { Transaction } from "@/hooks/useGlobalFilter";
+import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
+import CompareArrowsIcon from "@mui/icons-material/CompareArrows";
+import CustomLineTooltip from "./CustomTooltip";
 
 // Estilização do card
 const CardContainer = styled(Box)`
@@ -31,31 +35,46 @@ interface TransactionsTableProps {
 
 export default function TransactionCharts({ data }: TransactionsTableProps) {
   const theme = useTheme();
-  const { getMonthlyTransactions, setTransactions, getMonthlyBalance } = useTransaction();
+  const { getMonthlyTransactions, setTransactions, getMonthlyBalance } =
+    useTransaction();
 
   useEffect(() => setTransactions(data), [data, setTransactions]);
 
   const barChartData = getMonthlyTransactions();
   const balanceLineData = getMonthlyBalance();
 
+  const formatNumberK = (value: number) => {
+    const absValue = Math.abs(value);
+    const formatted =
+      absValue >= 1000
+        ? `${(absValue / 1000).toFixed(0)}k`
+        : absValue.toString();
+    return value < 0 ? `-${formatted}` : formatted;
+  };
+
   return (
     <Box
       display="flex"
       flexDirection="column"
-      height="calc(100vh - 8rem)"
+      height="calc(100vh - 10rem)"
       gap="1rem"
     >
       <CardContainer sx={{ flex: 1, display: "flex", flexDirection: "column" }}>
-        <Typography variant="h6" gutterBottom>
-          Transações dos últimos meses
-        </Typography>
+        <Box
+          display={"flex"}
+          justifyContent={"space-between"}
+          marginBottom={"1rem"}
+        >
+          <Typography variant="h6" gutterBottom>
+            Transações
+          </Typography>
+          <CompareArrowsIcon />
+        </Box>
         <Box flex={1}>
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={barChartData}>
-              <XAxis dataKey="month" stroke="#fff" />
-              <YAxis stroke="#fff" />
-              <Tooltip />
-              <Legend />
+              <XAxis dataKey="month" stroke="#fff" fontSize={'12px'}/>
+              <YAxis stroke="#fff" tickFormatter={formatNumberK} />
               <Bar
                 dataKey="deposit"
                 stackId="a"
@@ -66,27 +85,87 @@ export default function TransactionCharts({ data }: TransactionsTableProps) {
                 stackId="a"
                 fill={theme.palette.error.main}
               />
+              <Tooltip
+                formatter={(value: number, name: string) => {
+                  const label =
+                    name === "deposit"
+                      ? "Depósito"
+                      : name === "withdraw"
+                      ? "Saque"
+                      : name;
+                  return [
+                    value.toLocaleString("pt-BR", {
+                      style: "currency",
+                      currency: "BRL",
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2,
+                    }),
+                    label,
+                  ];
+                }}
+              />
+              <Legend
+                formatter={(value: string) => {
+                  if (value === "deposit") return "Depósito";
+                  if (value === "withdraw") return "Saque";
+                  return value;
+                }}
+              />
             </BarChart>
           </ResponsiveContainer>
         </Box>
       </CardContainer>
 
       <CardContainer sx={{ flex: 1, display: "flex", flexDirection: "column" }}>
-        <Typography variant="h6" gutterBottom>
-          Balanço dos últimos meses
-        </Typography>
+        <Box
+          display={"flex"}
+          justifyContent={"space-between"}
+          marginBottom={"1rem"}
+        >
+          <Typography variant="h6" gutterBottom>
+            Saldo Total
+          </Typography>
+          <AccountBalanceIcon />
+        </Box>
         <Box flex={1}>
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={balanceLineData}>
               <CartesianGrid strokeDasharray="3 3" stroke="#ccc" />
-              <XAxis dataKey="month" stroke="#fff" />
-              <YAxis stroke="#fff" />
-              <Tooltip />
-              <Legend />
+              <XAxis dataKey="month" stroke="#fff" fontSize={'12px'}/>
+              <YAxis stroke="#fff" tickFormatter={formatNumberK} />
+              <ReferenceLine
+                y={0}
+                stroke={theme.palette.error.main}
+                strokeWidth={2}
+              />
               <Line
                 type="monotone"
                 dataKey="balance"
-                stroke={theme.palette.success.main}
+                stroke={"white"}
+                dot={({ cx, cy, payload }) => {
+                  const isNegative = payload.balance < 0;
+                  return (
+                    <circle
+                      cx={cx}
+                      cy={cy}
+                      r={4}
+                      stroke={
+                        isNegative
+                          ? theme.palette.error.main
+                          : theme.palette.success.main
+                      }
+                      strokeWidth={2}
+                      fill="#fff"
+                    />
+                  );
+                }}
+              />
+              <Tooltip content={<CustomLineTooltip />} />
+              <Legend
+                formatter={(value: string) => {
+                  if (value === "balance") return "Balanço";
+                  return value;
+                }}
               />
             </LineChart>
           </ResponsiveContainer>

@@ -1,4 +1,11 @@
-import { useState, useContext, createContext, ReactNode } from "react";
+import {
+  useEffect,
+  useState,
+  useContext,
+  createContext,
+  ReactNode,
+} from "react";
+import axios from "axios";
 import { Transaction } from "./useGlobalFilter";
 
 export type TransactionType = "deposit" | "withdraw" | "";
@@ -34,6 +41,20 @@ const TransactionContext = createContext<TransactionContextType | undefined>(
 export const TransactionProvider = ({ children }: { children: ReactNode }) => {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
 
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = async () => {
+    try {
+      const res = await axios.get<Transaction[]>("/api/transactions");
+      console.log(res)
+      setTransactions(res.data);
+    } catch (error) {
+      console.error("Erro ao carregar transações:", error);
+    }
+  };
+
   const getMonthlyTransactions = (): MonthlyData[] => {
     const grouped: Record<string, { deposit: number; withdraw: number }> = {};
 
@@ -68,22 +89,21 @@ export const TransactionProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const getMonthlyDeposits = (): DepositData[] => {
-    const monthlyTransactions = getMonthlyTransactions();
-    return monthlyTransactions.map(({ month, deposit }) => ({
+    return getMonthlyTransactions().map(({ month, deposit }) => ({
       month,
       deposit,
     }));
   };
 
   const getMonthlyBalance = (): BalanceData[] => {
-  const monthly = getMonthlyTransactions();
-  let accumulated = 0;
+    const monthly = getMonthlyTransactions();
+    let accumulated = 0;
 
-  return monthly.map(({ month, deposit, withdraw }) => {
-    accumulated += deposit - withdraw;
-    return { month, balance: accumulated };
-  });
-};
+    return monthly.map(({ month, deposit, withdraw }) => {
+      accumulated += deposit - withdraw;
+      return { month, balance: accumulated };
+    });
+  };
 
   return (
     <TransactionContext.Provider
@@ -92,7 +112,7 @@ export const TransactionProvider = ({ children }: { children: ReactNode }) => {
         setTransactions,
         getMonthlyTransactions,
         getMonthlyDeposits,
-        getMonthlyBalance
+        getMonthlyBalance,
       }}
     >
       {children}
