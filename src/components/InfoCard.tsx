@@ -1,7 +1,7 @@
 'use client'
 import styled from 'styled-components'
 import { ReactNode } from 'react'
-import { useTheme } from '@mui/material/styles'
+import { useTheme  } from '@mui/material/styles'
 
 interface InfoCardProps {
   label: string
@@ -10,12 +10,12 @@ interface InfoCardProps {
   color?: 'primary' | 'success' | 'error' | 'warning'
 }
 
-const Card = styled.div`
-  background-color: white;
+const Card = styled.div<{ color: string }>`
+  background-color: ${({ color }) => color};
   border-radius: 12px;
   padding: 1.5rem;
   flex: 1;
-  min-width: 200px;
+  width: 100%;
   height: 150px;
   display: flex;
   flex-direction: column;
@@ -35,14 +35,14 @@ const TopRow = styled.div`
   align-items: center;
   font-weight: bold;
   font-size: 1rem;
-  color: #666;
+  color: white;
 `
 
 const BottomRight = styled.div<{ color: string }>`
   align-self: flex-end;
-  font-size: 2.2rem;
+  font-size: 2rem;
   font-weight: bold;
-  color: ${({ color }) => color};
+  color: white;
 `
 
 export default function InfoCard({ label, icon, value, color = 'primary' }: InfoCardProps) {
@@ -50,7 +50,7 @@ export default function InfoCard({ label, icon, value, color = 'primary' }: Info
   const selectedColor = theme.palette[color].main
 
   return (
-    <Card>
+    <Card color={selectedColor}>
       <TopRow>
         <span>{label}</span>
         {icon}
