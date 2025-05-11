@@ -21,7 +21,7 @@ const ValueText = styled(Typography)<ValueTextProps>`
   font-weight: 500;
 `;
 
-const CustomLineTooltip = ({
+const CustomBalanceTooltip = ({
   active,
   payload,
   label,
@@ -51,4 +51,4 @@ const CustomLineTooltip = ({
   return null;
 };
 
-export default CustomLineTooltip;
+export default CustomBalanceTooltip;

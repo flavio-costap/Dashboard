@@ -16,32 +16,27 @@ import {
 import { Box, Typography, useTheme } from "@mui/material";
 import { styled } from "styled-components";
 import { useTransaction } from "@/hooks/useTransaction";
-import { useEffect } from "react";
 import { Transaction } from "@/hooks/useGlobalFilter";
 import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
 import CompareArrowsIcon from "@mui/icons-material/CompareArrows";
-import CustomLineTooltip from "./CustomTooltip";
+import CustomBalanceTooltip from "./CustomBalanceTooltip";
+import CustomTransactionTooltip from "./CustomTransactionTooltip";
 
-// Estilização do card
 const CardContainer = styled(Box)`
   background-color: #193895;
   padding: 1.5rem;
   border-radius: 16px;
   color: white;
 `;
-interface TransactionsTableProps {
+interface TransactionsChartProps {
   data: Transaction[];
 }
 
-export default function TransactionCharts({ data }: TransactionsTableProps) {
+export default function TransactionCharts({ data }: TransactionsChartProps) {
   const theme = useTheme();
-  const { getMonthlyTransactions, setTransactions, getMonthlyBalance } =
-    useTransaction();
-
-  useEffect(() => setTransactions(data), [data, setTransactions]);
-
-  const barChartData = getMonthlyTransactions();
-  const balanceLineData = getMonthlyBalance();
+  const { getMonthlyTransactions, getMonthlyBalance } = useTransaction();
+  const barChartData = getMonthlyTransactions(data);
+  const balanceLineData = getMonthlyBalance(data);
 
   const formatNumberK = (value: number) => {
     const absValue = Math.abs(value);
@@ -56,7 +51,7 @@ export default function TransactionCharts({ data }: TransactionsTableProps) {
     <Box
       display="flex"
       flexDirection="column"
-      height="calc(100vh - 10rem)"
+      height="calc(100vh - 5rem)"
       gap="1rem"
     >
       <CardContainer sx={{ flex: 1, display: "flex", flexDirection: "column" }}>
@@ -73,7 +68,7 @@ export default function TransactionCharts({ data }: TransactionsTableProps) {
         <Box flex={1}>
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={barChartData}>
-              <XAxis dataKey="month" stroke="#fff" fontSize={'12px'}/>
+              <XAxis dataKey="month" stroke="#fff" fontSize={"12px"} />
               <YAxis stroke="#fff" tickFormatter={formatNumberK} />
               <Bar
                 dataKey="deposit"
@@ -85,25 +80,7 @@ export default function TransactionCharts({ data }: TransactionsTableProps) {
                 stackId="a"
                 fill={theme.palette.error.main}
               />
-              <Tooltip
-                formatter={(value: number, name: string) => {
-                  const label =
-                    name === "deposit"
-                      ? "Depósito"
-                      : name === "withdraw"
-                      ? "Saque"
-                      : name;
-                  return [
-                    value.toLocaleString("pt-BR", {
-                      style: "currency",
-                      currency: "BRL",
-                      minimumFractionDigits: 2,
-                      maximumFractionDigits: 2,
-                    }),
-                    label,
-                  ];
-                }}
-              />
+              <Tooltip content={<CustomTransactionTooltip />} />
               <Legend
                 formatter={(value: string) => {
                   if (value === "deposit") return "Depósito";
@@ -131,7 +108,7 @@ export default function TransactionCharts({ data }: TransactionsTableProps) {
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={balanceLineData}>
               <CartesianGrid strokeDasharray="3 3" stroke="#ccc" />
-              <XAxis dataKey="month" stroke="#fff" fontSize={'12px'}/>
+              <XAxis dataKey="month" stroke="#fff" fontSize={"12px"} />
               <YAxis stroke="#fff" tickFormatter={formatNumberK} />
               <ReferenceLine
                 y={0}
@@ -160,7 +137,7 @@ export default function TransactionCharts({ data }: TransactionsTableProps) {
                   );
                 }}
               />
-              <Tooltip content={<CustomLineTooltip />} />
+              <Tooltip content={<CustomBalanceTooltip />} />
               <Legend
                 formatter={(value: string) => {
                   if (value === "balance") return "Balanço";
