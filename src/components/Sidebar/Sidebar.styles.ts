@@ -9,7 +9,7 @@ export const SidebarContainer = styled.div.withConfig({
   shouldForwardProp: (prop) => prop !== "expanded",
 })<{ expanded: boolean }>`
   width: ${({ expanded }) => (expanded ? "200px" : "70px")};
-  height: 100vh;
+  height: 100%;
   background-color: #fff;
   display: flex;
   flex-direction: column;

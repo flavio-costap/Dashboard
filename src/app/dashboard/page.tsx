@@ -10,12 +10,15 @@ import GlobalFilter from "@/components/GlobalFilter/GlobalFilter";
 import { useTransaction } from "@/hooks/useTransaction";
 import ProtectedRoute from "@/components/ProtectedRoute/ProtectedRoute";
 import { Background, CustomContainer, Layout } from "./page.styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import MobileNavbar from "@/components/MobileNavbar/MobileNavbar";
 
 export default function DashboardPage() {
   const [isExpanded, setIsExpanded] = useState(false);
   const { filters, setFilters, filteredData } = useGlobalFilter();
   const { transactions } = useTransaction();
 
+  const isMobile = useMediaQuery("(max-width:600px)");
   const filteredTransactions = useMemo(
     () => filteredData(transactions),
     [filteredData, transactions]
@@ -30,11 +33,17 @@ export default function DashboardPage() {
   return (
     <ProtectedRoute>
       <Layout>
-        <Sidebar isExpanded={isExpanded} toggleSidebar={toggleSidebar} />
+        `
+        {isMobile ? (
+          <MobileNavbar />
+        ) : (
+          <Sidebar isExpanded={isExpanded} toggleSidebar={toggleSidebar} />
+        )}
+        `
         <Background $sidebarWidth={sidebarWidth}>
           <CustomContainer>
             <Grid container spacing={2} sx={{ width: "100%" }}>
-              <Grid size={8} height={'100%'}>
+              <Grid size={{ xs: 12, md: 8 }} height={"100%"}>
                 <GlobalFilter
                   search={filters.search}
                   onSearchChange={(v) =>
@@ -52,7 +61,7 @@ export default function DashboardPage() {
                 <MemoizedCardsGrid data={filteredTransactions} />
                 <TransactionsTable data={filteredTransactions} />
               </Grid>
-              <Grid size={4}>
+              <Grid size={{ xs: 12, md: 4 }}>
                 <TransactionCharts data={filteredTransactions} />
               </Grid>
             </Grid>

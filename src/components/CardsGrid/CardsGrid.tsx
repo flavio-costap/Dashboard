@@ -7,8 +7,9 @@ import { useTransaction } from "@/hooks/useTransaction";
 import { Transaction, useGlobalFilter } from "@/hooks/useGlobalFilter";
 import { useMemo } from "react";
 import dayjs from "dayjs";
-import { CustomGrid } from "./CardsGrid.styles";
+// import { CustomGrid } from "./CardsGrid.styles";
 import InfoCard from "../InfoCard/InfoCard";
+import { Grid } from "@mui/material";
 
 interface CardsGridProps {
   data?: Transaction[];
@@ -52,30 +53,38 @@ export default function CardsGrid({ data }: CardsGridProps) {
   }, [sourceData, filters]);
 
   return (
-    <CustomGrid>
-      <InfoCard
-        label="Receitas"
-        icon={<AttachMoneyIcon fontSize="large" />}
-        color="primary"
-        value={deposit}
-      />
-      <InfoCard
-        label="Despesas"
-        icon={<MoneyOffIcon fontSize="large" />}
-        color="error"
-        value={withdraw}
-      />
-      <InfoCard
-        label="Transações Pendentes"
-        icon={<PendingActionsIcon fontSize="large" />}
-        color="warning"
-      />
-      <InfoCard
-        label="Saldo total"
-        icon={<AccountBalanceIcon fontSize="large" />}
-        color="success"
-        value={balance}
-      />
-    </CustomGrid>
+    <Grid container spacing={2}>
+      <Grid size={{ xs: 6, md: 3 }}>
+        <InfoCard
+          label="Receitas"
+          icon={<AttachMoneyIcon fontSize="large" />}
+          color="primary"
+          value={deposit}
+        />
+      </Grid>
+      <Grid size={{ xs: 6, md: 3 }}>
+        <InfoCard
+          label="Despesas"
+          icon={<MoneyOffIcon fontSize="large" />}
+          color="error"
+          value={withdraw}
+        />
+      </Grid>
+      <Grid size={{ xs: 6, md: 3 }}>
+        <InfoCard
+          label="Transações Pendentes"
+          icon={<PendingActionsIcon fontSize="large" />}
+          color="warning"
+        />
+      </Grid>
+      <Grid size={{ xs: 6, md: 3 }}>
+        <InfoCard
+          label="Saldo total"
+          icon={<AccountBalanceIcon fontSize="large" />}
+          color="success"
+          value={balance}
+        />
+      </Grid>
+    </Grid>
   );
 }

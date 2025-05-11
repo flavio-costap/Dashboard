@@ -2,11 +2,16 @@ import styled from "styled-components";
 
 export const Layout = styled.div`
   display: flex;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
 `;
 
 export const CustomContainer = styled.div`
   width: 100%;
   height: 100%;
+  box-sizing: border-box;
+  overflow-y: auto;
 `;
 
 export const Background = styled.div<{ $sidebarWidth: number }>`
@@ -20,4 +25,8 @@ export const Background = styled.div<{ $sidebarWidth: number }>`
   display: flex;
   justify-content: center;
   align-items: flex-start;
+
+  @media (max-width: 600px) {
+    padding: 1rem;
+  }
 `;
