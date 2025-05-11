@@ -9,15 +9,21 @@ import { GlobalFilterProvider } from "@/hooks/useGlobalFilter";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { TransactionProvider } from "@/hooks/useTransaction";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import dayjs from "dayjs";
+import "dayjs/locale/pt-br";
+import { ptBR } from "@mui/x-date-pickers/locales";
+
+const brazilianLocale = ptBR.components.MuiLocalizationProvider.defaultProps.localeText;
 
 export default function RootLayout({ children }: { children: ReactNode }) {
+  dayjs.locale("pt-br");
   return (
     <html lang="pt-BR">
       <body>
         <MuiThemeProvider theme={theme}>
           <StyledThemeProvider theme={theme}>
             <CssBaseline />
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="pt-br" localeText={brazilianLocale}>
               <AuthProvider>
                 <GlobalFilterProvider>
                   <TransactionProvider>{children}</TransactionProvider>

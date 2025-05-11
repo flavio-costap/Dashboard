@@ -12,8 +12,11 @@ import CloseIcon from "@mui/icons-material/Close";
 import { TransactionType, useGlobalFilter } from "@/hooks/useGlobalFilter";
 import { DatePicker } from "@mui/x-date-pickers";
 import dayjs, { Dayjs } from "dayjs";
-import SearchFieldFilterMenu, { SearchFields } from "../SearchFieldFilterMenu/SearchFieldFilterMenu";
+import SearchFieldFilterMenu, {
+  SearchFields,
+} from "../SearchFieldFilterMenu/SearchFieldFilterMenu";
 import { FilterContainer, FlexBox } from "./GlobalFilter.styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 interface Props {
   search: string;
@@ -32,6 +35,7 @@ export default function GlobalFilter({
   onTypeChange,
 }: Props) {
   const { filters, setFilters } = useGlobalFilter();
+  const isMobile = useMediaQuery("(max-width:600px)");
   const defaultSearchFields: SearchFields = {
     account: true,
     industry: true,
@@ -112,7 +116,7 @@ export default function GlobalFilter({
               }
             />
             <TextField
-              label="Buscar"
+              label={isMobile ? "" : "Buscar"}
               value={filters.search}
               fullWidth
               onChange={(e) => handleSearchChange(e.target.value)}
@@ -130,16 +134,26 @@ export default function GlobalFilter({
         <Grid size={5}>
           <FlexBox gap={16}>
             <DatePicker
-              label="Data inicial"
+              label={isMobile ? "" : "Data inicial"}
               value={dateRange[0] ? dayjs(dateRange[0]) : null}
               onChange={handleStartDateChange}
               maxDate={dateRange[1] ? dayjs(dateRange[1]) : undefined}
+              slotProps={{
+                textField: {
+                  placeholder: "Dia/Mês/Ano",
+                },
+              }}
             />
             <DatePicker
-              label="Data final"
+              label={isMobile ? "" : "Data final"}
               value={dateRange[1] ? dayjs(dateRange[1]) : null}
               onChange={handleEndDateChange}
               minDate={dateRange[0] ? dayjs(dateRange[0]) : undefined}
+              slotProps={{
+                textField: {
+                  placeholder: "DD/MM/AAAA", // ou "Dia/Mês/Ano"
+                },
+              }}
             />
           </FlexBox>
         </Grid>
@@ -165,7 +179,7 @@ export default function GlobalFilter({
               onClick={handleClearAll}
               startIcon={<CloseIcon />}
             >
-              Limpar
+              {!isMobile && "Limpar"}
             </Button>
           </FlexBox>
         </Grid>
