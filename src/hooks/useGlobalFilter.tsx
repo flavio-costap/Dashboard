@@ -1,4 +1,4 @@
-import { useState, useContext, createContext, ReactNode } from "react";
+import { useState, useContext, createContext, ReactNode, useCallback } from "react";
 
 export type TransactionType = "deposit" | "withdraw" | "";
 
@@ -16,6 +16,7 @@ interface GlobalFilterState {
   search: string;
   dateRange: [Date | null, Date | null];
   transactionType: TransactionType;
+  searchFields: SearchFields;
 }
 
 type GlobalFilterContextType = {
@@ -23,6 +24,12 @@ type GlobalFilterContextType = {
   setFilters: React.Dispatch<React.SetStateAction<GlobalFilterState>>;
   filteredData: (data: Transaction[]) => Transaction[];
 };
+
+export interface SearchFields {
+  account: boolean;
+  industry: boolean;
+  state: boolean;
+}
 
 const GlobalFilterContext = createContext<GlobalFilterContextType | undefined>(
   undefined
@@ -33,13 +40,25 @@ export const GlobalFilterProvider = ({ children }: { children: ReactNode }) => {
     search: "",
     dateRange: [null, null],
     transactionType: "",
+    searchFields: {
+      account: true,
+      industry: true,
+      state: true,
+    },
   });
 
-  const filteredData = (data: Transaction[]): Transaction[] => {
+  const filteredData = useCallback((data: Transaction[]): Transaction[] => {
+    const search = filters.search?.toLowerCase() || "";
+
     return data.filter((item) => {
+      const { searchFields } = filters;
+
       const matchText =
-        item.account.toLowerCase().includes(filters.search.toLowerCase()) ||
-        item.industry.toLowerCase().includes(filters.search.toLowerCase());
+        (searchFields.account &&
+          item.account?.toLowerCase().includes(search)) ||
+        (searchFields.industry &&
+          item.industry?.toLowerCase().includes(search)) ||
+        (searchFields.state && item.state?.toLowerCase().includes(search));
 
       const matchType =
         filters.transactionType === "" ||
@@ -52,7 +71,7 @@ export const GlobalFilterProvider = ({ children }: { children: ReactNode }) => {
 
       return matchText && matchType && matchDate;
     });
-  };
+  }, [filters]);
 
   return (
     <GlobalFilterContext.Provider

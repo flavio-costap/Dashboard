@@ -3,7 +3,7 @@
 import ProtectedRoute from "@/components/ProtectedRoute";
 import styled from "styled-components";
 import Sidebar from "@/components/Sidebar";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import CardsGrid from "@/components/CardsGrid";
 import TransactionsTable from "@/components/TransactionsTable";
 import TransactionCharts from "@/components/TransactionCharts";
@@ -36,8 +36,13 @@ const Background = styled.div<{ $sidebarWidth: number }>`
 
 export default function DashboardPage() {
   const [isExpanded, setIsExpanded] = useState(false);
-  const { filters, setFilters } = useGlobalFilter();
+  const { filters, setFilters, filteredData } = useGlobalFilter();
   const { transactions } = useTransaction();
+
+  const filteredTransactions = useMemo(
+    () => filteredData(transactions),
+    [filteredData, transactions]
+  );
 
   return (
     <ProtectedRoute>
@@ -61,11 +66,11 @@ export default function DashboardPage() {
                     setFilters((f) => ({ ...f, transactionType: type }))
                   }
                 />
-                <CardsGrid />
-                <TransactionsTable data={transactions} />
+                <CardsGrid data={filteredTransactions} />
+                <TransactionsTable data={filteredTransactions} />
               </Grid>
               <Grid size={4}>
-                <TransactionCharts data={transactions} />
+                <TransactionCharts data={filteredTransactions}/>
               </Grid>
             </Grid>
           </CustomContainer>

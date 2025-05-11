@@ -29,9 +29,9 @@ type DepositData = {
 type TransactionContextType = {
   transactions: Transaction[];
   setTransactions: (data: Transaction[]) => void;
-  getMonthlyTransactions: () => MonthlyData[];
-  getMonthlyDeposits: () => DepositData[];
-  getMonthlyBalance: () => BalanceData[];
+  getMonthlyTransactions: (data: Transaction[]) => MonthlyData[];
+  getMonthlyDeposits: (data: Transaction[]) => DepositData[];
+  getMonthlyBalance: (data: Transaction[]) => BalanceData[];
 };
 
 const TransactionContext = createContext<TransactionContextType | undefined>(
@@ -55,10 +55,10 @@ export const TransactionProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  const getMonthlyTransactions = (): MonthlyData[] => {
+  const getMonthlyTransactions = (data: Transaction[]): MonthlyData[] => {
     const grouped: Record<string, { deposit: number; withdraw: number }> = {};
 
-    transactions.forEach((item) => {
+    data.forEach((item) => {
       const date = new Date(item.date);
       const key = `${date.getMonth() + 1}/${date.getFullYear()}`;
       const amount = Number(item.amount);
@@ -88,15 +88,15 @@ export const TransactionProvider = ({ children }: { children: ReactNode }) => {
     }));
   };
 
-  const getMonthlyDeposits = (): DepositData[] => {
-    return getMonthlyTransactions().map(({ month, deposit }) => ({
+  const getMonthlyDeposits = (data: Transaction[]): DepositData[] => {
+    return getMonthlyTransactions(data).map(({ month, deposit }) => ({
       month,
       deposit,
     }));
   };
 
-  const getMonthlyBalance = (): BalanceData[] => {
-    const monthly = getMonthlyTransactions();
+  const getMonthlyBalance = (data: Transaction[]): BalanceData[] => {
+    const monthly = getMonthlyTransactions(data);
     let accumulated = 0;
 
     return monthly.map(({ month, deposit, withdraw }) => {
