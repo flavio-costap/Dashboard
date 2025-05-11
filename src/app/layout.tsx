@@ -7,8 +7,8 @@ import { ThemeProvider as StyledThemeProvider } from "styled-components";
 import theme from "@/styles/theme";
 import { GlobalFilterProvider } from "@/hooks/useGlobalFilter";
 import { LocalizationProvider } from "@mui/x-date-pickers";
-import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { TransactionProvider } from "@/hooks/useTransaction";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
@@ -17,7 +17,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <MuiThemeProvider theme={theme}>
           <StyledThemeProvider theme={theme}>
             <CssBaseline />
-            <LocalizationProvider dateAdapter={AdapterDateFns}>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
               <AuthProvider>
                 <GlobalFilterProvider>
                   <TransactionProvider>{children}</TransactionProvider>
