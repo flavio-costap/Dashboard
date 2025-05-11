@@ -1,38 +1,15 @@
 "use client";
-
-import ProtectedRoute from "@/components/ProtectedRoute";
-import styled from "styled-components";
-import Sidebar from "@/components/Sidebar";
+import Sidebar from "@/components/Sidebar/Sidebar";
 import { memo, useCallback, useMemo, useState } from "react";
-import CardsGrid from "@/components/CardsGrid";
-import TransactionsTable from "@/components/TransactionsTable";
-import TransactionCharts from "@/components/TransactionCharts";
+import CardsGrid from "@/components/CardsGrid/CardsGrid";
+import TransactionsTable from "@/components/Tables/TransactionsTable/TransactionsTable";
+import TransactionCharts from "@/components/Charts/TransactionCharts/TransactionCharts";
 import { Grid } from "@mui/material";
 import { useGlobalFilter } from "@/hooks/useGlobalFilter";
-import GlobalFilter from "@/components/GlobalFilter";
+import GlobalFilter from "@/components/GlobalFilter/GlobalFilter";
 import { useTransaction } from "@/hooks/useTransaction";
-
-const Layout = styled.div`
-  display: flex;
-`;
-
-const CustomContainer = styled.div`
-  width: 100%;
-  height: 100%;
-`;
-
-const Background = styled.div<{ $sidebarWidth: number }>`
-  background-color: #264eca;
-  min-height: 100vh;
-  padding-top: 4rem;
-  padding-right: 4rem;
-  padding-left: ${({ $sidebarWidth }) => `calc(${$sidebarWidth}px + 4rem)`};
-  transition: padding-left 0.3s ease;
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-`;
+import ProtectedRoute from "@/components/ProtectedRoute/ProtectedRoute";
+import { Background, CustomContainer, Layout } from "./page.styles";
 
 export default function DashboardPage() {
   const [isExpanded, setIsExpanded] = useState(false);

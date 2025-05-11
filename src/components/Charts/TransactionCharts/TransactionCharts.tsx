@@ -14,49 +14,17 @@ import {
   ReferenceLine,
 } from "recharts";
 import { useTheme } from "@mui/material";
-import styled from "styled-components";
 import { useTransaction } from "@/hooks/useTransaction";
 import { Transaction } from "@/hooks/useGlobalFilter";
 import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
 import CompareArrowsIcon from "@mui/icons-material/CompareArrows";
-import CustomBalanceTooltip from "./CustomBalanceTooltip";
-import CustomTransactionTooltip from "./CustomTransactionTooltip";
+import CustomBalanceTooltip from "../../Tooltip/CustomBalanceTooltip/CustomBalanceTooltip";
+import CustomTransactionTooltip from "../../Tooltip/CustomTransactionTooltip/CustomTransactionTooltip";
+import { Card, ChartWrapper, Header, Title, Wrapper } from "./TransactionCharts.styles";
 
 interface TransactionsChartProps {
   data: Transaction[];
 }
-
-const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  height: calc(100vh - 5rem);
-  gap: 1rem;
-`;
-
-const Card = styled.div`
-  background-color: #193895;
-  padding: 1.5rem;
-  border-radius: 16px;
-  color: white;
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-`;
-
-const Header = styled.div`
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 1rem;
-`;
-
-const Title = styled.h6`
-  margin: 0;
-  font-size: 1.25rem;
-`;
-
-const ChartWrapper = styled.div`
-  flex: 1;
-`;
 
 export default function TransactionCharts({ data }: TransactionsChartProps) {
   const theme = useTheme();

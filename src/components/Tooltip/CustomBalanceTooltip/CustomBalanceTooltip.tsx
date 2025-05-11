@@ -2,22 +2,12 @@ import { Typography } from "@mui/material";
 import { TooltipProps } from "recharts";
 import { ValueType, NameType } from "recharts/types/component/DefaultTooltipContent";
 import styled from "styled-components";
+import { TooltipContainer } from "./CustomBalanceTooltip.styles";
 
-// Container do Tooltip
-const TooltipContainer = styled.div`
-  background-color: #fff;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  padding: 8px 12px;
-  color: #000;
-`;
-
-// Tipagem da prop isNegative
 interface ValueTextProps {
   isNegative: boolean;
 }
 
-// Correção: filtrando a prop com shouldForwardProp
 const ValueText = styled(Typography).withConfig({
   shouldForwardProp: (prop) => prop !== "isNegative",
 })<ValueTextProps>`

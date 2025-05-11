@@ -4,13 +4,12 @@ import {
   Table,
   TableBody,
   TableCell,
-  TableContainer,
   TableHead,
   TableRow,
   TablePagination,
 } from "@mui/material";
-import { styled } from "styled-components";
 import { useState } from "react";
+import { StyledTableContainer } from "./TransactionsTable.styles";
 
 export interface Transaction {
   date: number;
@@ -25,15 +24,6 @@ export interface Transaction {
 interface TransactionsTableProps {
   data: Transaction[];
 }
-
-const StyledTableContainer = styled(TableContainer)`
-  margin-top: 1rem;
-  margin-bottom: 1rem;
-  height: 100%;
-  background-color: white;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-`;
 
 export default function TransactionsTable({ data }: TransactionsTableProps) {
   const [page, setPage] = useState(0);

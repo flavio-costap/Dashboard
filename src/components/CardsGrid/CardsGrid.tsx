@@ -1,19 +1,14 @@
 "use client";
-import styled from "styled-components";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import MoneyOffIcon from "@mui/icons-material/MoneyOff";
 import PendingActionsIcon from "@mui/icons-material/PendingActions";
 import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
-import InfoCard from "./InfoCard";
 import { useTransaction } from "@/hooks/useTransaction";
 import { Transaction, useGlobalFilter } from "@/hooks/useGlobalFilter";
 import { useMemo } from "react";
 import dayjs from "dayjs";
-
-const CustomGrid = styled.div`
-  display: flex;
-  gap: 1rem;
-`;
+import { CustomGrid } from "./CardsGrid.styles";
+import InfoCard from "../InfoCard/InfoCard";
 
 interface CardsGridProps {
   data?: Transaction[];
