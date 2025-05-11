@@ -9,12 +9,15 @@ import DashboardOutlinedIcon from "@mui/icons-material/DashboardOutlined";
 import { Button } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
+import { memo } from "react";
 
 const SidebarWrapper = styled.div`
   position: relative;
 `;
 
-const SidebarContainer = styled.div<{ expanded: boolean }>`
+const SidebarContainer = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== "expanded",
+})<{ expanded: boolean }>`
   width: ${({ expanded }) => (expanded ? "200px" : "70px")};
   height: 100vh;
   background-color: #fff;
@@ -28,7 +31,9 @@ const SidebarContainer = styled.div<{ expanded: boolean }>`
   overflow: hidden;
 `;
 
-const Header = styled.div<{ expanded: boolean }>`
+const Header = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== "expanded",
+})<{ expanded: boolean }>`
   background-color: #193895;
   padding: 1rem;
   display: flex;
@@ -39,7 +44,6 @@ const Header = styled.div<{ expanded: boolean }>`
   font-weight: bold;
   justify-content: ${({ expanded }) => (expanded ? "flex-start" : "center")};
 `;
-
 const StyledButton = styled(Button).withConfig({
   shouldForwardProp: (prop) => prop !== "expanded" && prop !== "colorhex",
 })<{ colorhex: string; expanded: boolean }>`
@@ -77,17 +81,16 @@ const LogoutContainer = styled.div`
 
 interface SidebarProps {
   isExpanded: boolean;
-  setIsExpanded: (expanded: boolean) => void;
+  toggleSidebar: () => void
 }
 
-export default function Sidebar({ isExpanded, setIsExpanded }: SidebarProps) {
+function Sidebar({ isExpanded, toggleSidebar }: SidebarProps) {
   const router = useRouter();
   const { logout } = useAuth();
 
   return (
     <SidebarWrapper
-      onMouseEnter={() => setIsExpanded(true)}
-      onMouseLeave={() => setIsExpanded(false)}
+      onClick={() => toggleSidebar()}
     >
       <SidebarContainer expanded={isExpanded}>
         <Header expanded={isExpanded}>
@@ -142,3 +145,5 @@ export default function Sidebar({ isExpanded, setIsExpanded }: SidebarProps) {
     </SidebarWrapper>
   );
 }
+
+export default memo(Sidebar);

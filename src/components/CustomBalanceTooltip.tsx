@@ -3,6 +3,7 @@ import { TooltipProps } from "recharts";
 import { ValueType, NameType } from "recharts/types/component/DefaultTooltipContent";
 import styled from "styled-components";
 
+// Container do Tooltip
 const TooltipContainer = styled.div`
   background-color: #fff;
   border: 1px solid #ccc;
@@ -11,11 +12,15 @@ const TooltipContainer = styled.div`
   color: #000;
 `;
 
+// Tipagem da prop isNegative
 interface ValueTextProps {
   isNegative: boolean;
 }
 
-const ValueText = styled(Typography)<ValueTextProps>`
+// Correção: filtrando a prop com shouldForwardProp
+const ValueText = styled(Typography).withConfig({
+  shouldForwardProp: (prop) => prop !== "isNegative",
+})<ValueTextProps>`
   color: ${({ isNegative, theme }) =>
     isNegative ? theme.palette.error.main : theme.palette.success.main};
   font-weight: 500;

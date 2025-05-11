@@ -1,7 +1,6 @@
 "use client";
 
 import {
-  Box,
   TextField,
   MenuItem,
   InputAdornment,
@@ -13,6 +12,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import { TransactionType, useGlobalFilter } from "@/hooks/useGlobalFilter";
 import { DatePicker } from "@mui/x-date-pickers";
 import dayjs, { Dayjs } from "dayjs";
+import styled from "styled-components";
 import SearchFieldFilterMenu, { SearchFields } from "./SearchFieldFilterMenu";
 
 interface Props {
@@ -23,6 +23,22 @@ interface Props {
   transactionType: TransactionType;
   onTypeChange: (type: TransactionType) => void;
 }
+
+const FilterContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  padding: 16px;
+  margin-bottom: 16px;
+  background-color: white;
+  border-radius: 16px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+  width: 100%;
+`;
+
+const FlexBox = styled.div<{ gap?: number }>`
+  display: flex;
+  gap: ${({ gap }) => gap || 8}px;
+`;
 
 export default function GlobalFilter({
   dateRange,
@@ -101,19 +117,10 @@ export default function GlobalFilter({
   };
 
   return (
-    <Box
-      display="flex"
-      flexWrap="wrap"
-      p={2}
-      mb={2}
-      bgcolor="white"
-      borderRadius={2}
-      boxShadow={2}
-      width="100%"
-    >
-      <Grid container spacing={2} alignItems="center" width={'100%'}>
+    <FilterContainer>
+      <Grid container spacing={2} alignItems="center" width={"100%"}>
         <Grid size={4}>
-          <Box display="flex" gap={1}>
+          <FlexBox gap={8}>
             <SearchFieldFilterMenu
               value={filters.searchFields}
               onChange={(newFields) =>
@@ -133,11 +140,11 @@ export default function GlobalFilter({
                 ),
               }}
             />
-          </Box>
+          </FlexBox>
         </Grid>
 
         <Grid size={5}>
-          <Box display="flex" gap={2}>
+          <FlexBox gap={16}>
             <DatePicker
               label="Data inicial"
               value={dateRange[0] ? dayjs(dateRange[0]) : null}
@@ -150,11 +157,11 @@ export default function GlobalFilter({
               onChange={handleEndDateChange}
               minDate={dateRange[0] ? dayjs(dateRange[0]) : undefined}
             />
-          </Box>
+          </FlexBox>
         </Grid>
 
         <Grid size={3}>
-          <Box display="flex" gap={2}>
+          <FlexBox gap={16}>
             <TextField
               label="Tipo"
               select
@@ -176,9 +183,9 @@ export default function GlobalFilter({
             >
               Limpar
             </Button>
-          </Box>
+          </FlexBox>
         </Grid>
       </Grid>
-    </Box>
+    </FilterContainer>
   );
 }

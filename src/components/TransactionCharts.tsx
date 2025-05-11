@@ -13,8 +13,8 @@ import {
   CartesianGrid,
   ReferenceLine,
 } from "recharts";
-import { Box, Typography, useTheme } from "@mui/material";
-import { styled } from "styled-components";
+import { useTheme } from "@mui/material";
+import styled from "styled-components";
 import { useTransaction } from "@/hooks/useTransaction";
 import { Transaction } from "@/hooks/useGlobalFilter";
 import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
@@ -22,15 +22,41 @@ import CompareArrowsIcon from "@mui/icons-material/CompareArrows";
 import CustomBalanceTooltip from "./CustomBalanceTooltip";
 import CustomTransactionTooltip from "./CustomTransactionTooltip";
 
-const CardContainer = styled(Box)`
+interface TransactionsChartProps {
+  data: Transaction[];
+}
+
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 5rem);
+  gap: 1rem;
+`;
+
+const Card = styled.div`
   background-color: #193895;
   padding: 1.5rem;
   border-radius: 16px;
   color: white;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
 `;
-interface TransactionsChartProps {
-  data: Transaction[];
-}
+
+const Header = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+`;
+
+const Title = styled.h6`
+  margin: 0;
+  font-size: 1.25rem;
+`;
+
+const ChartWrapper = styled.div`
+  flex: 1;
+`;
 
 export default function TransactionCharts({ data }: TransactionsChartProps) {
   const theme = useTheme();
@@ -48,27 +74,16 @@ export default function TransactionCharts({ data }: TransactionsChartProps) {
   };
 
   return (
-    <Box
-      display="flex"
-      flexDirection="column"
-      height="calc(100vh - 5rem)"
-      gap="1rem"
-    >
-      <CardContainer sx={{ flex: 1, display: "flex", flexDirection: "column" }}>
-        <Box
-          display={"flex"}
-          justifyContent={"space-between"}
-          marginBottom={"1rem"}
-        >
-          <Typography variant="h6" gutterBottom>
-            Transações
-          </Typography>
+    <Wrapper>
+      <Card>
+        <Header>
+          <Title>Transações</Title>
           <CompareArrowsIcon />
-        </Box>
-        <Box flex={1}>
+        </Header>
+        <ChartWrapper>
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={barChartData}>
-              <XAxis dataKey="month" stroke="#fff" fontSize={"12px"} />
+              <XAxis dataKey="month" stroke="#fff" fontSize={12} />
               <YAxis stroke="#fff" tickFormatter={formatNumberK} />
               <Bar
                 dataKey="deposit"
@@ -90,25 +105,19 @@ export default function TransactionCharts({ data }: TransactionsChartProps) {
               />
             </BarChart>
           </ResponsiveContainer>
-        </Box>
-      </CardContainer>
+        </ChartWrapper>
+      </Card>
 
-      <CardContainer sx={{ flex: 1, display: "flex", flexDirection: "column" }}>
-        <Box
-          display={"flex"}
-          justifyContent={"space-between"}
-          marginBottom={"1rem"}
-        >
-          <Typography variant="h6" gutterBottom>
-            Saldo Total
-          </Typography>
+      <Card>
+        <Header>
+          <Title>Saldo Total</Title>
           <AccountBalanceIcon />
-        </Box>
-        <Box flex={1}>
+        </Header>
+        <ChartWrapper>
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={balanceLineData}>
               <CartesianGrid strokeDasharray="3 3" stroke="#ccc" />
-              <XAxis dataKey="month" stroke="#fff" fontSize={"12px"} />
+              <XAxis dataKey="month" stroke="#fff" fontSize={12} />
               <YAxis stroke="#fff" tickFormatter={formatNumberK} />
               <ReferenceLine
                 y={0}
@@ -123,6 +132,7 @@ export default function TransactionCharts({ data }: TransactionsChartProps) {
                   const isNegative = payload.balance < 0;
                   return (
                     <circle
+                      key={cx}
                       cx={cx}
                       cy={cy}
                       r={4}
@@ -146,8 +156,8 @@ export default function TransactionCharts({ data }: TransactionsChartProps) {
               />
             </LineChart>
           </ResponsiveContainer>
-        </Box>
-      </CardContainer>
-    </Box>
+        </ChartWrapper>
+      </Card>
+    </Wrapper>
   );
 }
