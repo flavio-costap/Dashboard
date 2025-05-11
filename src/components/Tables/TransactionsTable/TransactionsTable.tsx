@@ -10,6 +10,7 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import { StyledTableContainer } from "./TransactionsTable.styles";
+import { styled } from "@mui/system";
 
 export interface Transaction {
   date: number;
@@ -24,6 +25,20 @@ export interface Transaction {
 interface TransactionsTableProps {
   data: Transaction[];
 }
+
+const translate = {
+  deposit: "Depósito",
+  withdraw: "Saque",
+  USD: "Dólar",
+  BRL: "Real",
+  EUR: "Euro",
+};
+
+const StyledTableRow = styled(TableRow)(({ theme }) => ({
+  "&:hover": {
+    backgroundColor: theme.palette.action.hover,
+  },
+}));
 
 export default function TransactionsTable({ data }: TransactionsTableProps) {
   const [page, setPage] = useState(0);
@@ -42,6 +57,10 @@ export default function TransactionsTable({ data }: TransactionsTableProps) {
     page * rowsPerPage,
     page * rowsPerPage + rowsPerPage
   );
+
+  const translateTerm = (term: string) => {
+    return translate[term.toLowerCase() as keyof typeof translate] || term;
+  };
 
   return (
     <>
@@ -74,7 +93,7 @@ export default function TransactionsTable({ data }: TransactionsTableProps) {
           </TableHead>
           <TableBody>
             {paginatedData.map((item, idx) => (
-              <TableRow key={idx}>
+              <StyledTableRow key={idx}>
                 <TableCell>{formatDate(item.date)}</TableCell>
                 <TableCell>
                   {Number(item.amount).toLocaleString("pt-BR", {
@@ -82,12 +101,23 @@ export default function TransactionsTable({ data }: TransactionsTableProps) {
                     currency: item.currency.toUpperCase(),
                   })}
                 </TableCell>
-                <TableCell>{item.transaction_type}</TableCell>
-                <TableCell>{item.currency.toUpperCase()}</TableCell>
+                <TableCell
+                  sx={{
+                    color:
+                      item.transaction_type.toLowerCase() === "deposit"
+                        ? "success.main"
+                        : item.transaction_type.toLowerCase() === "withdraw"
+                        ? "error.main"
+                        : "inherit",
+                  }}
+                >
+                  {translateTerm(item.transaction_type)}
+                </TableCell>
+                <TableCell>{translateTerm(item.currency.toUpperCase())}</TableCell>
                 <TableCell>{item.account}</TableCell>
-                <TableCell>{item.industry}</TableCell>
-                <TableCell>{item.state}</TableCell>
-              </TableRow>
+                <TableCell>{translateTerm(item.industry)}</TableCell>
+                <TableCell>{translateTerm(item.state)}</TableCell>
+              </StyledTableRow>
             ))}
           </TableBody>
         </Table>
