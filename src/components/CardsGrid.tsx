@@ -15,29 +15,6 @@ const CustomGrid = styled.div`
   gap: 1rem;
 `;
 
-function abbreviateNumber(value: number): string {
-  const absValue = Math.abs(value);
-
-  let abbreviated = "";
-  if (absValue >= 1_000_000) {
-    abbreviated = (absValue / 1_000_000).toFixed(1) + "M";
-  } else if (absValue >= 1_000) {
-    abbreviated = (absValue / 1_000).toFixed(1) + "k";
-  } else {
-    abbreviated = absValue.toString();
-  }
-
-  return value < 0 ? `-${abbreviated}` : abbreviated;
-}
-
-function formatCurrency(value: number): string {
-  return new Intl.NumberFormat("pt-BR", {
-    style: "currency",
-    currency: "BRL",
-    maximumFractionDigits: 0,
-  }).format(value);
-}
-
 interface CardsGridProps {
   data?: Transaction[];
 }
@@ -85,28 +62,24 @@ export default function CardsGrid({ data }: CardsGridProps) {
         label="Receitas"
         icon={<AttachMoneyIcon fontSize="large" />}
         color="primary"
-        abbreviateNumber={abbreviateNumber(deposit)}
-        value={formatCurrency(deposit)}
+        value={deposit}
       />
       <InfoCard
         label="Despesas"
         icon={<MoneyOffIcon fontSize="large" />}
         color="error"
-        abbreviateNumber={abbreviateNumber(withdraw)}
-        value={formatCurrency(withdraw)}
+        value={withdraw}
       />
       <InfoCard
         label="Transações Pendentes"
         icon={<PendingActionsIcon fontSize="large" />}
         color="warning"
-        abbreviateNumber="Nenhuma"
       />
       <InfoCard
         label="Saldo total"
         icon={<AccountBalanceIcon fontSize="large" />}
         color="success"
-        abbreviateNumber={abbreviateNumber(balance)}
-        value={formatCurrency(balance)}
+        value={balance}
       />
     </CustomGrid>
   );
