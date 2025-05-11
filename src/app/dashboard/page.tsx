@@ -3,7 +3,7 @@
 import ProtectedRoute from "@/components/ProtectedRoute";
 import styled from "styled-components";
 import Sidebar from "@/components/Sidebar";
-import { useMemo, useState } from "react";
+import { memo, useCallback, useMemo, useState } from "react";
 import CardsGrid from "@/components/CardsGrid";
 import TransactionsTable from "@/components/TransactionsTable";
 import TransactionCharts from "@/components/TransactionCharts";
@@ -44,14 +44,20 @@ export default function DashboardPage() {
     [filteredData, transactions]
   );
 
+  const MemoizedCardsGrid = memo(CardsGrid);
+  const sidebarWidth = useMemo(() => (isExpanded ? 200 : 70), [isExpanded]);
+  const toggleSidebar = useCallback(() => {
+    setIsExpanded((prev) => !prev);
+  }, []);
+
   return (
     <ProtectedRoute>
       <Layout>
-        <Sidebar isExpanded={isExpanded} setIsExpanded={setIsExpanded} />
-        <Background $sidebarWidth={isExpanded ? 200 : 70}>
+        <Sidebar isExpanded={isExpanded} toggleSidebar={toggleSidebar} />
+        <Background $sidebarWidth={sidebarWidth}>
           <CustomContainer>
             <Grid container spacing={2} sx={{ width: "100%" }}>
-              <Grid size={8}>
+              <Grid size={8} height={'100%'}>
                 <GlobalFilter
                   search={filters.search}
                   onSearchChange={(v) =>
@@ -66,11 +72,11 @@ export default function DashboardPage() {
                     setFilters((f) => ({ ...f, transactionType: type }))
                   }
                 />
-                <CardsGrid data={filteredTransactions} />
+                <MemoizedCardsGrid data={filteredTransactions} />
                 <TransactionsTable data={filteredTransactions} />
               </Grid>
               <Grid size={4}>
-                <TransactionCharts data={filteredTransactions}/>
+                <TransactionCharts data={filteredTransactions} />
               </Grid>
             </Grid>
           </CustomContainer>
