@@ -80,7 +80,7 @@ npm install
 yarn
 ```
 
-- Coloque o arquivo transactions.json na raiz do projeto (sem alterações).
+- Utilize o arquivo [transactions.json](https://dashboard-one-smoky.vercel.app/transactions.json).
 
 - Inicie o servidor de desenvolvimento:
 
