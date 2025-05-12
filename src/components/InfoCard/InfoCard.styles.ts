@@ -1,5 +1,11 @@
 import styled from "styled-components";
 
+export const BoxCard = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+`;
+
 export const Card = styled.div<{ color: string }>`
   background-color: ${({ color }) => color};
   border-radius: 12px;
@@ -30,19 +36,23 @@ export const TopRow = styled.div`
 
 export const BottomRight = styled.div`
   align-self: flex-end;
-  font-size: 2.5rem;
+  font-size: clamp(1.5rem, 5vw, 2rem);
   font-weight: bold;
   color: white;
-
-  @media (max-width: 600px) {
-    font-size: 1.8rem;
-  }
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+  max-width: 100%;
 `;
 
 export const BottomSubRight = styled.div`
   position: absolute;
   bottom: 10px;
   right: 1.5rem;
-  font-size: 0.8rem;
+  font-size: clamp(0.6rem, 2vw, 0.8rem);
   color: white;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;

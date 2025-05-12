@@ -52,7 +52,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setUser(null);
     localStorage.removeItem("user");
     localStorage.removeItem("authToken");
-
+    localStorage.removeItem("global-filters");
     router.push("/login");
 
     setTimeout(() => setIsLoggingOut(false), 1000);
