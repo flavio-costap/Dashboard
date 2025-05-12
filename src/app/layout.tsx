@@ -12,6 +12,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
 import "dayjs/locale/pt-br";
 import { ptBR } from "@mui/x-date-pickers/locales";
+import { Toaster } from 'react-hot-toast'
 
 const brazilianLocale = ptBR.components.MuiLocalizationProvider.defaultProps.localeText;
 
@@ -23,6 +24,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <MuiThemeProvider theme={theme}>
           <StyledThemeProvider theme={theme}>
             <CssBaseline />
+            <Toaster position="top-right" />
             <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="pt-br" localeText={brazilianLocale}>
               <AuthProvider>
                 <GlobalFilterProvider>
