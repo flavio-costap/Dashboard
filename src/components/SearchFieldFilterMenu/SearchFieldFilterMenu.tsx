@@ -71,7 +71,7 @@ export default function SearchFieldFilterMenu({ value, onChange }: Props) {
                 onChange={() => handleCheckboxChange("industry")}
               />
             }
-            label="Indústrias"
+            label="Setor"
           />
         </MenuItem>
         <MenuItem>
