@@ -1,36 +1,91 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Financial Dashboard
 
-## Getting Started
+Este projeto é um **dashboard financeiro interativo** desenvolvido como parte de um desafio técnico proposto em um processo seletivo. Ele também serve como base de estudos contínuos em tecnologias modernas de front-end como Next.js, TypeScript e styled-components.
 
-First, run the development server:
+## 🔗 Acesse o projeto online
+
+👉 [https://dashboard-one-smoky.vercel.app/login](https://dashboard-one-smoky.vercel.app/login)
+
+---
+
+## ⚙️ Tecnologias utilizadas
+
+- [Next.js](https://nextjs.org/) `v15.3.2`
+- [React](https://react.dev/) `v19`
+- [TypeScript](https://www.typescriptlang.org/) `^5`
+- [styled-components](https://styled-components.com/) `^6`
+- [MUI (Material UI)](https://mui.com/)
+- [Recharts](https://recharts.org/) para visualização de dados
+- [Jest](https://jestjs.io/) e [ts-jest](https://github.com/kulshekhar/ts-jest) para testes
+- [Day.js](https://day.js.org/) e [date-fns](https://date-fns.org/) para manipulação de datas
+- [Axios](https://axios-http.com/) para requisições
+- [react-countup](https://github.com/glennreyes/react-countup) para animação de números
+- [react-hot-toast](https://react-hot-toast.com/) para notificações
+
+---
+
+## 📦 Scripts disponíveis
+
+```bash
+npm run dev       # Inicia o servidor de desenvolvimento
+npm run build     # Gera a build de produção
+npm run start     # Inicia a aplicação em produção
+npm run lint      # Executa o linter
+npm run test      # Executa os testes com Jest
+```
+
+# Funcionalidades
+
+- Página de login com autenticação fictícia
+
+- Proteção de rota da Dashboard
+
+- Persistência de sessão e filtros via LocalStorage
+
+- Filtros globais por data, conta, indústria e estado
+
+- Cards com resumo financeiro (receitas, despesas, saldo, pendências)
+
+- Gráfico de barras empilhadas e gráfico de linhas com saldo mensal
+
+- Lista de transações filtrável e paginada
+
+- Sidebar com navegação e logout
+
+- Interface responsiva para mobile e desktop
+
+---
+
+# Instalação e execução local
+
+## Pré-requisitos
+
+- Node.js v18+
+- NPM ou Yarn
+
+## Passos
+
+- Clone o repositório:
+
+```bash
+git clone https://github.com/flavio-costap/Dashboard.git
+cd Dashboard
+```
+
+- Instale as dependências:
+
+```bash
+npm install
+# ou
+yarn
+```
+
+- Coloque o arquivo transactions.json na raiz do projeto (sem alterações).
+
+- Inicie o servidor de desenvolvimento:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Acesse http://localhost:3000
