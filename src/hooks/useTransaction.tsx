@@ -7,6 +7,8 @@ import {
 } from "react";
 import axios from "axios";
 import { Transaction } from "./useGlobalFilter";
+import { useAuth } from "./useAuth";
+import toast from "react-hot-toast";
 
 export type TransactionType = "deposit" | "withdraw" | "";
 
@@ -40,18 +42,21 @@ const TransactionContext = createContext<TransactionContextType | undefined>(
 
 export const TransactionProvider = ({ children }: { children: ReactNode }) => {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const { user } = useAuth()
 
   useEffect(() => {
-    fetchData();
-  }, []);
+    if (user) {
+      fetchData()
+    }
+  }, [user]) 
 
   const fetchData = async () => {
     try {
       const res = await axios.get<Transaction[]>("/api/transactions");
-      console.log(res)
       setTransactions(res.data);
     } catch (error) {
       console.error("Erro ao carregar transações:", error);
+      toast.error('Erro ao carregar transações')
     }
   };
 

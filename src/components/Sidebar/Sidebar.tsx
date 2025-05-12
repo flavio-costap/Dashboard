@@ -22,11 +22,9 @@ function Sidebar({ isExpanded, toggleSidebar }: SidebarProps) {
   const { logout } = useAuth();
 
   return (
-    <SidebarWrapper
-      onClick={() => toggleSidebar()}
-    >
+    <SidebarWrapper>
       <SidebarContainer expanded={isExpanded}>
-        <Header expanded={isExpanded}>
+        <Header expanded={isExpanded} onClick={() => toggleSidebar()}>
           <DashboardOutlinedIcon />
           {isExpanded && <span>Dashboard</span>}
         </Header>
