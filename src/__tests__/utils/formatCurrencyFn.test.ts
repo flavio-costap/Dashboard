@@ -13,6 +13,6 @@ describe('formatCurrencyFn', () => {
   });
 
   it('should return currency string with 0 decimal places', () => {
-    expect(formatCurrencyFn(1234.5678).replace(/\u00A0/g, ' ')).toBe('R$ 1.235');  // Rounded to 0 decimal places
+    expect(formatCurrencyFn(1234.5678).replace(/\u00A0/g, ' ')).toBe('R$ 1.235');
   });
 });
