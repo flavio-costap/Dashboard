@@ -11,6 +11,7 @@ import {
 import { useState } from "react";
 import { StyledTableContainer } from "./TransactionsTable.styles";
 import { styled } from "@mui/system";
+import { formatDate } from "@/utils/formatDate";
 
 export interface Transaction {
   date: number;
@@ -46,11 +47,6 @@ export default function TransactionsTable({ data }: TransactionsTableProps) {
 
   const handleChangePage = (_: unknown, newPage: number) => {
     setPage(newPage);
-  };
-
-  const formatDate = (timestamp: number) => {
-    const date = new Date(timestamp);
-    return date.toLocaleDateString("pt-BR");
   };
 
   const paginatedData = data.slice(

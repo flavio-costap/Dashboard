@@ -21,6 +21,7 @@ import CompareArrowsIcon from "@mui/icons-material/CompareArrows";
 import CustomBalanceTooltip from "../../Tooltip/CustomBalanceTooltip/CustomBalanceTooltip";
 import CustomTransactionTooltip from "../../Tooltip/CustomTransactionTooltip/CustomTransactionTooltip";
 import { Card, ChartWrapper, Header, Title, Wrapper } from "./TransactionCharts.styles";
+import { formatNumberK } from "@/utils/formatNumberK";
 
 interface TransactionsChartProps {
   data: Transaction[];
@@ -31,15 +32,6 @@ export default function TransactionCharts({ data }: TransactionsChartProps) {
   const { getMonthlyTransactions, getMonthlyBalance } = useTransaction();
   const barChartData = getMonthlyTransactions(data);
   const balanceLineData = getMonthlyBalance(data);
-
-  const formatNumberK = (value: number) => {
-    const absValue = Math.abs(value);
-    const formatted =
-      absValue >= 1000
-        ? `${(absValue / 1000).toFixed(0)}k`
-        : absValue.toString();
-    return value < 0 ? `-${formatted}` : formatted;
-  };
 
   return (
     <Wrapper>
