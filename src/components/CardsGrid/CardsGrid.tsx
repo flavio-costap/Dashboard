@@ -7,7 +7,6 @@ import { useTransaction } from "@/hooks/useTransaction";
 import { Transaction, useGlobalFilter } from "@/hooks/useGlobalFilter";
 import { useMemo } from "react";
 import dayjs from "dayjs";
-// import { CustomGrid } from "./CardsGrid.styles";
 import InfoCard from "../InfoCard/InfoCard";
 import { Grid } from "@mui/material";
 

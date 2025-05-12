@@ -33,6 +33,10 @@ export const BottomRight = styled.div`
   font-size: 2.5rem;
   font-weight: bold;
   color: white;
+
+  @media (max-width: 600px) {
+    font-size: 1.8rem;
+  }
 `;
 
 export const BottomSubRight = styled.div`

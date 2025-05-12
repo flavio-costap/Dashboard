@@ -12,6 +12,28 @@ export const CustomContainer = styled.div`
   height: 100%;
   box-sizing: border-box;
   overflow-y: auto;
+  padding-right: 1rem;
+
+  @media (max-width: 600px) {
+    padding-right: 0;
+  }
+
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: ${({ theme }) => theme.palette.primary.main};
+    border-radius: 8px;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
+  }
+
+  scrollbar-width: thin;
+  scrollbar-color: ${({ theme }) => theme.palette.primary.main} transparent;
 `;
 
 export const Background = styled.div<{ $sidebarWidth: number }>`
@@ -28,5 +50,8 @@ export const Background = styled.div<{ $sidebarWidth: number }>`
 
   @media (max-width: 600px) {
     padding: 1rem;
+    padding-top: 5rem;
+    padding-bottom: 5rem;
+    width: 100%;
   }
 `;

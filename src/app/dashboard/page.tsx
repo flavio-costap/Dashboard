@@ -33,17 +33,15 @@ export default function DashboardPage() {
   return (
     <ProtectedRoute>
       <Layout>
-        `
         {isMobile ? (
           <MobileNavbar />
         ) : (
           <Sidebar isExpanded={isExpanded} toggleSidebar={toggleSidebar} />
         )}
-        `
         <Background $sidebarWidth={sidebarWidth}>
           <CustomContainer>
             <Grid container spacing={2} sx={{ width: "100%" }}>
-              <Grid size={{ xs: 12, md: 8 }} height={"100%"}>
+              <Grid size={{ xs: 12, md: 8 }}>
                 <GlobalFilter
                   search={filters.search}
                   onSearchChange={(v) =>

@@ -2,7 +2,6 @@
 import { useState } from "react";
 import {
   Toolbar,
-  IconButton,
   Typography,
   Drawer,
   List,
@@ -16,10 +15,15 @@ import PersonIcon from "@mui/icons-material/Person";
 import CreditCardIcon from "@mui/icons-material/CreditCard";
 import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
 import LogoutIcon from "@mui/icons-material/Logout";
-import MenuIcon from "@mui/icons-material/Menu";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
-import { DrawerContent, DrawerHeader, StyledAppBar, StyledBackdrop, StyledListItem } from "./MobileNavbar.styled";
+import {
+  DrawerContent,
+  DrawerHeader,
+  StyledAppBar,
+  StyledBackdrop,
+  StyledListItem,
+} from "./MobileNavbar.styled";
 
 export default function MobileNavbar() {
   const [open, setOpen] = useState(false);
@@ -36,10 +40,7 @@ export default function MobileNavbar() {
     <>
       <StyledAppBar position="fixed">
         <Toolbar>
-          <IconButton edge="start" color="inherit" onClick={toggleDrawer}>
-            <MenuIcon />
-          </IconButton>
-          <DashboardOutlinedIcon sx={{ ml: 1 }} />
+          <DashboardOutlinedIcon onClick={toggleDrawer} />
           <Typography variant="h6" component="div" sx={{ ml: 1 }}>
             Dashboard
           </Typography>
@@ -48,7 +49,14 @@ export default function MobileNavbar() {
 
       <StyledBackdrop open={open} onClick={toggleDrawer} />
 
-      <Drawer anchor="left" open={open} onClose={toggleDrawer}>
+      <Drawer
+        anchor="left"
+        open={open}
+        onClose={toggleDrawer}
+        ModalProps={{
+          BackdropProps: { style: { backgroundColor: "transparent" } },
+        }}
+      >
         <DrawerContent role="presentation">
           <DrawerHeader>
             <DashboardOutlinedIcon />
@@ -56,28 +64,37 @@ export default function MobileNavbar() {
               Dashboard
             </Typography>
           </DrawerHeader>
-          <Divider />
           <List>
             <StyledListItem onClick={() => handleNavigate("/dashboard")}>
-              <ListItemIcon><HomeIcon /></ListItemIcon>
+              <ListItemIcon>
+                <HomeIcon />
+              </ListItemIcon>
               <ListItemText primary="Home" />
             </StyledListItem>
             <StyledListItem onClick={() => handleNavigate("/dashboard")}>
-              <ListItemIcon><PersonIcon /></ListItemIcon>
+              <ListItemIcon>
+                <PersonIcon />
+              </ListItemIcon>
               <ListItemText primary="Perfil" />
             </StyledListItem>
             <StyledListItem onClick={() => handleNavigate("/dashboard")}>
-              <ListItemIcon><CreditCardIcon /></ListItemIcon>
+              <ListItemIcon>
+                <CreditCardIcon />
+              </ListItemIcon>
               <ListItemText primary="Planos" />
             </StyledListItem>
             <StyledListItem onClick={() => handleNavigate("/dashboard")}>
-              <ListItemIcon><LocalPhoneIcon /></ListItemIcon>
+              <ListItemIcon>
+                <LocalPhoneIcon />
+              </ListItemIcon>
               <ListItemText primary="Contatos" />
             </StyledListItem>
             <Divider />
             <StyledListItem onClick={logout}>
-              <ListItemIcon><LogoutIcon /></ListItemIcon>
-              <ListItemText primary="Logout" />
+              <ListItemIcon>
+                <LogoutIcon color="error" />
+              </ListItemIcon>
+              <ListItemText primary="Logout" primaryTypographyProps={{ color: "error.main" }} />
             </StyledListItem>
           </List>
         </DrawerContent>

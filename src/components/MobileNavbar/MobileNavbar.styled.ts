@@ -8,6 +8,8 @@ export const StyledAppBar = styled(AppBar)`
 
 export const DrawerContent = styled.div`
   width: 250px;
+  z-index: 1302;
+  position: relative;
 `;
 
 export const DrawerHeader = styled.div`
@@ -24,6 +26,6 @@ export const StyledListItem = styled(ListItem)`
 `;
 
 export const StyledBackdrop = styled(Backdrop)`
-  z-index: 1300;
+z-index: 10;
   background-color: rgba(0, 0, 0, 0.5);
 `;

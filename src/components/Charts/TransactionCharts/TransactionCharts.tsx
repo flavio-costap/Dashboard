@@ -42,7 +42,7 @@ export default function TransactionCharts({ data }: TransactionsChartProps) {
         </Header>
         <ChartWrapper>
           <ResponsiveContainer width="100%" height="100%">
-            <BarChart data={barChartData}>
+            <BarChart data={barChartData.slice(-10)}>
               <XAxis dataKey="month" stroke="#fff" fontSize={12} />
               <YAxis stroke="#fff" tickFormatter={formatNumberK} />
               <Bar

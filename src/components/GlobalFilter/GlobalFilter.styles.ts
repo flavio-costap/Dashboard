@@ -1,3 +1,4 @@
+import { Button } from "@mui/material";
 import styled from "styled-components";
 
 export const FilterContainer = styled.div`
@@ -14,4 +15,10 @@ export const FilterContainer = styled.div`
 export const FlexBox = styled.div<{ gap?: number }>`
   display: flex;
   gap: ${({ gap }) => gap || 8}px;
+`;
+
+export const StyledButton = styled(Button)`
+  @media (max-width: 600px) {
+    width: 140px
+  }
 `;

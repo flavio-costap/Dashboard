@@ -5,7 +5,6 @@ import {
   MenuItem,
   InputAdornment,
   Grid,
-  Button,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import CloseIcon from "@mui/icons-material/Close";
@@ -15,7 +14,7 @@ import dayjs, { Dayjs } from "dayjs";
 import SearchFieldFilterMenu, {
   SearchFields,
 } from "../SearchFieldFilterMenu/SearchFieldFilterMenu";
-import { FilterContainer, FlexBox } from "./GlobalFilter.styles";
+import { FilterContainer, FlexBox, StyledButton } from "./GlobalFilter.styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 
 interface Props {
@@ -107,7 +106,7 @@ export default function GlobalFilter({
   return (
     <FilterContainer>
       <Grid container spacing={2} alignItems="center" width={"100%"}>
-        <Grid size={4}>
+        <Grid size={{ xs: 12, md: 4 }}>
           <FlexBox gap={8}>
             <SearchFieldFilterMenu
               value={filters.searchFields}
@@ -131,7 +130,7 @@ export default function GlobalFilter({
           </FlexBox>
         </Grid>
 
-        <Grid size={5}>
+        <Grid size={{ xs: 12, md: 5 }}>
           <FlexBox gap={16}>
             <DatePicker
               label={isMobile ? "" : "Data inicial"}
@@ -151,14 +150,14 @@ export default function GlobalFilter({
               minDate={dateRange[0] ? dayjs(dateRange[0]) : undefined}
               slotProps={{
                 textField: {
-                  placeholder: "DD/MM/AAAA", // ou "Dia/Mês/Ano"
+                  placeholder: "DD/MM/AAAA",
                 },
               }}
             />
           </FlexBox>
         </Grid>
 
-        <Grid size={3}>
+        <Grid size={{ xs: 12, md: 3 }}>
           <FlexBox gap={16}>
             <TextField
               label="Tipo"
@@ -172,15 +171,15 @@ export default function GlobalFilter({
               <MenuItem value="deposit">Depósito</MenuItem>
               <MenuItem value="withdraw">Saque</MenuItem>
             </TextField>
-            <Button
+            <StyledButton
               variant="outlined"
               color="secondary"
               fullWidth
               onClick={handleClearAll}
               startIcon={<CloseIcon />}
             >
-              {!isMobile && "Limpar"}
-            </Button>
+               Limpar
+            </StyledButton>
           </FlexBox>
         </Grid>
       </Grid>
