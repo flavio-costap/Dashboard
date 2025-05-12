@@ -3,7 +3,7 @@ import { AppBar, Backdrop, ListItem } from "@mui/material";
 
 export const StyledAppBar = styled(AppBar)`
   background-color: #193895;
-  z-index: 1301; // acima do Drawer
+  z-index: 1301;
 `;
 
 export const DrawerContent = styled.div`
