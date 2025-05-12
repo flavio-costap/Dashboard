@@ -1,4 +1,4 @@
-import { useState, useContext, createContext, ReactNode, useCallback } from "react";
+import { useState, useContext, createContext, ReactNode, useCallback, useEffect } from "react";
 
 export type TransactionType = "deposit" | "withdraw" | "";
 
@@ -31,9 +31,9 @@ export interface SearchFields {
   state: boolean;
 }
 
-const GlobalFilterContext = createContext<GlobalFilterContextType | undefined>(
-  undefined
-);
+const GlobalFilterContext = createContext<GlobalFilterContextType | undefined>(undefined);
+
+const LOCAL_STORAGE_KEY = "global-filters";
 
 export const GlobalFilterProvider = ({ children }: { children: ReactNode }) => {
   const [filters, setFilters] = useState<GlobalFilterState>({
@@ -47,6 +47,21 @@ export const GlobalFilterProvider = ({ children }: { children: ReactNode }) => {
     },
   });
 
+  useEffect(() => {
+    const saved = localStorage.getItem(LOCAL_STORAGE_KEY);
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      parsed.dateRange = parsed.dateRange.map((d: string | null) =>
+        d ? new Date(d) : null
+      );
+      setFilters(parsed);
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(filters));
+  }, [filters]);
+
   const filteredData = useCallback((data: Transaction[]): Transaction[] => {
     const search = filters.search?.toLowerCase() || "";
 
@@ -54,19 +69,15 @@ export const GlobalFilterProvider = ({ children }: { children: ReactNode }) => {
       const { searchFields } = filters;
 
       const matchText =
-        (searchFields.account &&
-          item.account?.toLowerCase().includes(search)) ||
-        (searchFields.industry &&
-          item.industry?.toLowerCase().includes(search)) ||
+        (searchFields.account && item.account?.toLowerCase().includes(search)) ||
+        (searchFields.industry && item.industry?.toLowerCase().includes(search)) ||
         (searchFields.state && item.state?.toLowerCase().includes(search));
 
       const matchType =
-        filters.transactionType === "" ||
-        item.transaction_type === filters.transactionType;
+        filters.transactionType === "" || item.transaction_type === filters.transactionType;
 
       const matchDate =
-        (!filters.dateRange[0] ||
-          item.date >= filters.dateRange[0].getTime()) &&
+        (!filters.dateRange[0] || item.date >= filters.dateRange[0].getTime()) &&
         (!filters.dateRange[1] || item.date <= filters.dateRange[1].getTime());
 
       return matchText && matchType && matchDate;
@@ -89,9 +100,7 @@ export const GlobalFilterProvider = ({ children }: { children: ReactNode }) => {
 export const useGlobalFilter = () => {
   const context = useContext(GlobalFilterContext);
   if (!context) {
-    throw new Error(
-      "useGlobalFilter must be used within a GlobalFilterProvider"
-    );
+    throw new Error("useGlobalFilter must be used within a GlobalFilterProvider");
   }
   return context;
 };
