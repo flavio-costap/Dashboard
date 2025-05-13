@@ -2,6 +2,9 @@
 
 Este projeto é um **dashboard financeiro interativo** desenvolvido como parte de um desafio técnico proposto em um processo seletivo. Ele também serve como base de estudos contínuos em tecnologias modernas de front-end como Next.js, TypeScript e styled-components.
 
+- login: admin@admin.com 
+- senha: admin123
+
 ## 🔗 Acesse o projeto online
 
 👉 [https://dashboard-one-smoky.vercel.app/login](https://dashboard-one-smoky.vercel.app/login)
